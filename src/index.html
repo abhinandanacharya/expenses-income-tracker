@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Flo — Daily Finance Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="./style.css" rel="stylesheet" />
+</head>
+<body>
+
+<header>
+  <div class="logo">Fl<span>o</span><span class="logo-sub">Finance</span></div>
+  <div class="date-display" id="dateDisplay"></div>
+</header>
+
+<main>
+  <div class="summary-strip">
+    <div class="summary-card income">
+      <div class="summary-label">Total Income</div>
+      <div class="summary-amount" id="totalIncome">Rs.0</div>
+      <div class="summary-change" id="incomeCount">0 entries</div>
+    </div>
+    <div class="summary-card expense">
+      <div class="summary-label">Total Expenses</div>
+      <div class="summary-amount" id="totalExpense">Rs.0</div>
+      <div class="summary-change" id="expenseCount">0 entries</div>
+    </div>
+    <div class="summary-card balance">
+      <div class="summary-label">Net Balance</div>
+      <div class="summary-amount" id="netBalance">Rs.0</div>
+      <div class="summary-change" id="savingsRate">Savings rate: 0%</div>
+    </div>
+  </div>
+
+  <div class="left-col">
+    <div class="chart-card">
+      <div class="card-title">
+        Category Breakdown
+        <span class="card-title-tag" id="chartMonthLabel"></span>
+      </div>
+      <div class="bar-chart" id="barChart">
+        <div class="empty-state" style="padding:16px 0"><div class="empty-state-icon">📊</div><div class="empty-state-text">Add transactions to see breakdown</div></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="card-title">
+        Recent Transactions
+        <div class="filter-row" id="filterRow"></div>
+      </div>
+      <div class="tx-list" id="txList">
+        <div class="empty-state"><div class="empty-state-icon">💸</div><div class="empty-state-text">No transactions yet. Add one!</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <!-- ADD FORM -->
+    <div class="form-card">
+      <div class="form-title">Add <span>Entry</span></div>
+      <div class="type-toggle">
+        <button class="type-btn active income" id="btnIncome" onclick="setType('income')">↑ Income</button>
+        <button class="type-btn expense" id="btnExpense" onclick="setType('expense')">↓ Expense</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <input class="form-input" id="txDesc" type="text" placeholder="e.g. Salary, Groceries…"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount</label>
+        <div class="amount-input-wrap">
+          <span class="amount-prefix">Rs.</span>
+          <input class="form-input" id="txAmount" type="number" min="0" step="0.01" placeholder="0.00"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="txCategory"><option value="">Select category</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" id="txDate" type="date"/>
+      </div>
+      <button class="submit-btn" onclick="addTransaction()">Add Transaction</button>
+    </div>
+
+    <!-- STATEMENT DOWNLOADER -->
+    <div class="statement-card">
+      <div class="stmt-section-title">
+        <span>📄</span> Download Statement
+      </div>
+
+      <div class="period-tabs">
+        <button class="period-tab" id="tab-daily"   onclick="setPeriod('daily')">Daily</button>
+        <button class="period-tab active" id="tab-weekly"  onclick="setPeriod('weekly')">Weekly</button>
+        <button class="period-tab" id="tab-monthly" onclick="setPeriod('monthly')">Monthly</button>
+        <button class="period-tab" id="tab-yearly"  onclick="setPeriod('yearly')">Yearly</button>
+      </div>
+
+      <div class="period-nav">
+        <button class="period-nav-btn" onclick="shiftPeriod(-1)">&#8249;</button>
+        <div class="period-label" id="periodLabel">—</div>
+        <button class="period-nav-btn" onclick="shiftPeriod(1)">&#8250;</button>
+      </div>
+
+      <div class="stmt-preview" id="stmtPreview"></div>
+
+      <button class="download-btn" onclick="downloadStatement()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF Statement
+      </button>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="./script.js" ></script>
+</body>
+</html>
